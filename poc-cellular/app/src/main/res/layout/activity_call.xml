@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView android:id="@+id/tvCallNumber"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="—" android:textSize="22sp" android:textStyle="bold" />
+        <TextView android:id="@+id/tvCallState"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="IDLE" android:textSize="16sp"
+            android:textColor="?android:attr/textColorSecondary"
+            android:layout_marginBottom="8dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <Button android:id="@+id/btnAnswer"
+                android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+                android:text="Answer" />
+            <Button android:id="@+id/btnHangup"
+                android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+                android:text="Hang up" />
+            <Button android:id="@+id/btnSpeaker"
+                android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+                android:text="Speaker" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="RX — can the app HEAR the caller?" android:textStyle="bold"
+            android:layout_marginTop="12dp" />
+        <TextView
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="Run during an ACTIVE call. Ask the other person to keep talking."
+            android:textColor="?android:attr/textColorSecondary" android:textSize="12sp" />
+        <LinearLayout
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:orientation="horizontal" android:layout_marginTop="4dp">
+            <Button android:id="@+id/btnProbeStart"
+                android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+                android:text="Start" />
+            <Button android:id="@+id/btnProbeStop"
+                android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+                android:text="Stop" />
+            <Button android:id="@+id/btnProbeSource"
+                android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+                android:text="Src" />
+        </LinearLayout>
+        <TextView android:id="@+id/tvLevels"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:text="levels: —" android:typeface="monospace" android:textSize="13sp" />
+
+        <TextView
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="TX — can the caller HEAR the app?" android:textStyle="bold"
+            android:layout_marginTop="12dp" />
+        <TextView
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="Play a tone during an ACTIVE call, then record what the other person says."
+            android:textColor="?android:attr/textColorSecondary" android:textSize="12sp" />
+        <LinearLayout
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:orientation="horizontal" android:layout_marginTop="4dp">
+            <Button android:id="@+id/btnToneModern"
+                android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+                android:text="Tone A" />
+            <Button android:id="@+id/btnToneLegacy"
+                android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+                android:text="Tone B" />
+        </LinearLayout>
+        <TextView android:id="@+id/tvTxResult"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="TX result: not tested" android:textSize="14sp" android:textStyle="bold" />
+        <LinearLayout
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:orientation="horizontal" android:layout_marginTop="4dp">
+            <Button android:id="@+id/btnHeardYes"
+                android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+                android:text="Caller HEARD it" />
+            <Button android:id="@+id/btnHeardNo"
+                android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+                android:text="NOT heard" />
+        </LinearLayout>
+
+        <Button android:id="@+id/btnClose"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:text="Back to main" android:layout_marginTop="16dp" />
+    </LinearLayout>
+</ScrollView>

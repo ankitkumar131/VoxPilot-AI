@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="CELLULAR AUDIO POC"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Proves what stock Android allows on physical-SIM calls"
+            android:textColor="?android:attr/textColorSecondary"
+            android:layout_marginBottom="12dp" />
+
+        <TextView android:id="@+id/tvStatusDialer"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="Default dialer: ?" android:textSize="15sp" android:textStyle="bold" />
+        <TextView android:id="@+id/tvStatusPerms"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="Permissions: ?" android:textSize="15sp" android:textStyle="bold" />
+        <TextView android:id="@+id/tvStatusSim"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="SIM: ?" android:textSize="15sp" android:textStyle="bold"
+            android:layout_marginBottom="8dp" />
+
+        <Button android:id="@+id/btnRole"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:text="1. Set as default Phone app" />
+        <Button android:id="@+id/btnPerms"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:text="2. Grant permissions" />
+
+        <TextView
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="Outbound test (call your 2nd phone):"
+            android:textStyle="bold" android:layout_marginTop="12dp" />
+        <EditText android:id="@+id/etNumber"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:hint="+91 XXXXX XXXXX"
+            android:inputType="phone" />
+        <Button android:id="@+id/btnPlaceCall"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:text="3. Place test call via SIM" />
+
+        <CheckBox android:id="@+id/cbAutoAnswer"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="Auto-answer incoming calls (for inbound test)"
+            android:layout_marginTop="8dp" />
+
+        <Button android:id="@+id/btnCallScreen"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:text="Open call test screen" />
+
+        <TextView
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="Event log:" android:textStyle="bold" android:layout_marginTop="12dp" />
+        <ScrollView android:id="@+id/scrollLog"
+            android:layout_width="match_parent" android:layout_height="220dp"
+            android:background="#10000000">
+            <TextView android:id="@+id/tvLog"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:typeface="monospace" android:textSize="11sp"
+                android:padding="8dp" android:text="(log)" />
+        </ScrollView>
+
+        <LinearLayout
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:orientation="horizontal" android:layout_marginTop="8dp">
+            <Button android:id="@+id/btnCopyReport"
+                android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+                android:text="Copy result report" />
+            <Button android:id="@+id/btnClearLog"
+                android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+                android:text="Clear log" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="After testing: Settings → Apps → Default apps → Phone app → switch back to Phone."
+            android:textColor="?android:attr/textColorSecondary"
+            android:textSize="12sp" android:layout_marginTop="12dp" />
+    </LinearLayout>
+</ScrollView>

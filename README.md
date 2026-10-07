@@ -52,6 +52,12 @@ Recordings are owner-only (authenticated range streams).
   (Android Studio setup → run on emulator/phone → build APK).
   The Kotlin module in `native/android/` adds device-level telephony (see its README).
 
+## Cellular POC (SIM-call experiment)
+
+`poc-cellular/` is a tiny native app that proves what stock Android allows on
+physical-SIM calls (default dialer, auto-answer, RX capture, TX injection).
+See its README for the exact test procedure before planning SIM-based features.
+
 ## Testing
 
 ```bash
