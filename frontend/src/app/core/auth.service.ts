@@ -3,11 +3,13 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { tap } from 'rxjs';
 import { AuthResponse, User } from './models';
+import { ServerConfigService } from './server-config.service';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private http = inject(HttpClient);
   private router = inject(Router);
+  private server = inject(ServerConfigService);
   user = signal<User | null>(null);
   loggedIn = computed(() => !!this.user());
 
@@ -18,12 +20,14 @@ export class AuthService {
     if (raw && this.token) { try { this.user.set(JSON.parse(raw)); } catch {} }
   }
 
+  // NOTE: URLs go through ServerConfigService so the APK talks to the
+  // configured backend (ngrok/LAN) instead of the phone's own localhost.
   login(email: string, password: string) {
-    return this.http.post<AuthResponse>('/api/auth/login', { email, password })
+    return this.http.post<AuthResponse>(this.server.api('/api/auth/login'), { email, password })
       .pipe(tap(r => this.persist(r)));
   }
   register(name: string, email: string, password: string) {
-    return this.http.post<AuthResponse>('/api/auth/register', { name, email, password })
+    return this.http.post<AuthResponse>(this.server.api('/api/auth/register'), { name, email, password })
       .pipe(tap(r => this.persist(r)));
   }
   private persist(r: AuthResponse): void {
@@ -34,7 +38,7 @@ export class AuthService {
   }
   logout(): void {
     const refresh = localStorage.getItem('vp_refresh');
-    if (refresh && this.token) this.http.post('/api/auth/logout', { refresh }).subscribe({ error: () => {} });
+    if (refresh && this.token) this.http.post(this.server.api('/api/auth/logout'), { refresh }).subscribe({ error: () => {} });
     localStorage.removeItem('vp_access'); localStorage.removeItem('vp_refresh'); localStorage.removeItem('vp_user');
     this.user.set(null);
     this.router.navigate(['/login']);
