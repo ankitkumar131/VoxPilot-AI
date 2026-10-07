@@ -13,7 +13,12 @@ export class SocketService {
     if (this.socket?.connected) return;
     const token = localStorage.getItem('vp_access') || '';
     const base = this.server.baseUrl || undefined; // undefined = same origin (web dev)
-    this.socket = io(base, { path: '/socket.io', auth: { token }, transports: ['websocket', 'polling'] });
+    const opts = {
+      path: '/socket.io', auth: { token }, transports: ['websocket', 'polling'],
+      // Best-effort tunnel bypass for the polling transport (ignored where unsupported).
+      transportOptions: { polling: { extraHeaders: { 'ngrok-skip-browser-warning': 'true' } } },
+    };
+    this.socket = io(base, opts as never);
     this.socket.on('connect', () => this.connected.set(true));
     this.socket.on('disconnect', () => this.connected.set(false));
   }

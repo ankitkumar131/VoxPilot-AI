@@ -5,7 +5,12 @@ import { catchError, throwError } from 'rxjs';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const token = localStorage.getItem('vp_access');
-  const authReq = token ? req.clone({ setHeaders: { Authorization: `Bearer ${token}` } }) : req;
+  // ngrok-skip-browser-warning: lets the app work through free ngrok/Cloudflare
+  // tunnels (otherwise ngrok serves an interstitial HTML page instead of JSON).
+  // Harmless for direct/LAN connections — plain backends simply ignore it.
+  const headers: Record<string, string> = { 'ngrok-skip-browser-warning': 'true' };
+  if (token) headers['Authorization'] = `Bearer ${token}`;
+  const authReq = req.clone({ setHeaders: headers });
   return next(authReq).pipe(
     catchError((err: HttpErrorResponse) => {
       if (err.status === 401 && !req.url.includes('/api/auth/')) {

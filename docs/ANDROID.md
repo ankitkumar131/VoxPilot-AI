@@ -206,6 +206,33 @@ The app talks to `http://<PC-IP>:4000`, which Android blocks by default.
 
 ---
 
+## Part H — Using ngrok (reach your PC backend from anywhere)
+
+If the phone is **not** on the same Wi-Fi (or you just want a public URL):
+
+1. Start the backend, then in another terminal:
+   ```powershell
+   ngrok http 4000
+   ```
+   Copy the **https** URL, e.g. `https://a1b2c3d4.ngrok-free.app`.
+   (Tip: free ngrok gives one static domain — reserve it at
+   https://dashboard.ngrok.com/domains and run
+   `ngrok http 4000 --url=your-name.ngrok-free.app` so the URL never changes.)
+2. **In the app — no rebuild needed:**
+   - On the login screen → **⚙ Server settings** → paste the ngrok URL → Sign in, or
+   - **Settings → Server connection** → paste → **Test** → **Save** → reload the app.
+   - Paste the plain URL only: `https://xxxx.ngrok-free.app`
+     (no trailing `/`, no `/api` — the app adds that).
+3. Keep both `npm run dev` (backend) and `ngrok` running while testing.
+
+Notes:
+- The app sends `ngrok-skip-browser-warning` automatically, so free-tier
+  ngrok works for all API calls. If the sidebar shows "realtime offline"
+  through free ngrok, calls still work normally (answers use REST);
+  realtime syncs fully on direct LAN or paid ngrok.
+- Free ngrok URLs change on every restart (unless static) — just paste the
+  new URL in-app again. Nothing to rebuild.
+
 ## Part G — Daily workflow (after setup)
 
 ```powershell
