@@ -48,8 +48,9 @@ Recordings are owner-only (authenticated range streams).
 
 - Browser **simulated calls** work end-to-end today (mic, dictation, TTS, barge-in, takeover).
 - PSTN/SIP production path is adapter-ready — see `docs/TELEPHONY.md`.
-- Android: `cd frontend && npx cap add android && npx cap sync` (needs Android SDK),
-  plus the Kotlin module in `native/android/` — see its README.
+- Android APK: full step-by-step guide in **`docs/ANDROID.md`**
+  (Android Studio setup → run on emulator/phone → build APK).
+  The Kotlin module in `native/android/` adds device-level telephony (see its README).
 
 ## Testing
 

@@ -10,7 +10,7 @@ let io: Server | null = null;
 
 export function initSocket(server: any) {
   io = new Server(server, {
-    cors: { origin: [config.frontendUrl, 'http://localhost:4200', 'http://localhost:8100', 'capacitor://localhost'], credentials: true },
+    cors: { origin: [config.frontendUrl, 'http://localhost:4200', 'http://localhost:8100', 'capacitor://localhost', 'http://localhost', 'https://localhost'], credentials: true },
     path: '/socket.io',
   });
   io.use((socket, next) => {

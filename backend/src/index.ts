@@ -26,7 +26,8 @@ async function main() {
   const app = express();
   app.set('trust proxy', 1);
   app.use(helmet({ crossOriginResourcePolicy: { policy: 'cross-origin' } }));
-  app.use(cors({ origin: [config.frontendUrl, 'http://localhost:4200', 'http://localhost:8100', 'capacitor://localhost'], credentials: true }));
+  // capacitor://localhost + http(s)://localhost = Android/iOS WebView origins (APK builds).
+  app.use(cors({ origin: [config.frontendUrl, 'http://localhost:4200', 'http://localhost:8100', 'capacitor://localhost', 'http://localhost', 'https://localhost'], credentials: true }));
   app.use(express.json({ limit: '12mb' }));
   app.use(express.urlencoded({ extended: true }));
 

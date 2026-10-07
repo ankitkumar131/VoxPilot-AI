@@ -1,20 +1,24 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
 import { io, Socket } from 'socket.io-client';
 import { Observable } from 'rxjs';
+import { ServerConfigService } from './server-config.service';
 
 @Injectable({ providedIn: 'root' })
 export class SocketService {
+  private server = inject(ServerConfigService);
   private socket: Socket | null = null;
   connected = signal(false);
 
   connect(): void {
     if (this.socket?.connected) return;
     const token = localStorage.getItem('vp_access') || '';
-    this.socket = io({ path: '/socket.io', auth: { token }, transports: ['websocket', 'polling'] });
+    const base = this.server.baseUrl || undefined; // undefined = same origin (web dev)
+    this.socket = io(base, { path: '/socket.io', auth: { token }, transports: ['websocket', 'polling'] });
     this.socket.on('connect', () => this.connected.set(true));
     this.socket.on('disconnect', () => this.connected.set(false));
   }
   disconnect(): void { this.socket?.disconnect(); this.socket = null; this.connected.set(false); }
+  reconnect(): void { this.disconnect(); this.connect(); }
   joinCall(callId: string): void { this.socket?.emit('join-call', callId); }
   leaveCall(callId: string): void { this.socket?.emit('leave-call', callId); }
   signalBargeIn(callId: string): void { this.socket?.emit('barge-in', callId); }

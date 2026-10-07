@@ -6,7 +6,9 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "build:apk": "ng build --configuration production && npx cap sync android",
+    "sync:android": "npx cap sync android"
   },
   "private": true,
   "dependencies": {
