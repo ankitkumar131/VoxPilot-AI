@@ -19,6 +19,7 @@ import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
@@ -29,6 +30,17 @@ import kotlinx.coroutines.launch
 class MainActivity : AppCompatActivity() {
 
     private val REQ_PERMS = 100
+
+    private val roleLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        val granted = result.resultCode == android.app.Activity.RESULT_OK
+        CallSession.log("ROLE_DIALER granted=$granted")
+        if (!granted) {
+            CallSession.log("If the prompt failed: Settings → Apps → Default apps → Phone app → VoxPilot POC")
+        }
+        refreshStatus()
+    }
 
     private fun runtimePerms(): Array<String> {
         val list = mutableListOf(
@@ -113,13 +125,8 @@ class MainActivity : AppCompatActivity() {
                 return
             }
             CallSession.log("requesting ROLE_DIALER…")
-            rm.requestRole(RoleManager.ROLE_DIALER, mainExecutor) { granted ->
-                CallSession.log("ROLE_DIALER granted=$granted")
-                if (!granted) {
-                    CallSession.log("If the prompt failed: Settings → Apps → Default apps → Phone app → VoxPilot POC")
-                }
-                refreshStatus()
-            }
+            val intent = rm.createRequestRoleIntent(RoleManager.ROLE_DIALER)
+            roleLauncher.launch(intent)
         } catch (t: Throwable) {
             CallSession.log("role request FAILED: ${t.message}")
         }
