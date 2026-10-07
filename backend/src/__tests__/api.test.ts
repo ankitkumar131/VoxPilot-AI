@@ -1,4 +1,4 @@
-// API smoke tests with in-memory store (no Mongo/Redis needed).
+// API smoke tests with file-backed store (no MongoDB server needed).
 process.env.MASTER_KEY = 'test-master-key-32-bytes-minimum!!!';
 process.env.DATA_DIR = './data-test';
 import request from 'supertest';

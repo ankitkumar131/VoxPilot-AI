@@ -12,8 +12,7 @@ export const config = {
   jwtSecret: req('JWT_SECRET', 'dev-jwt-secret-change-me'),
   jwtRefreshSecret: req('JWT_REFRESH_SECRET', 'dev-refresh-secret-change-me'),
   masterKey: req('MASTER_KEY', 'dev-master-key-32-bytes-minimum!!'),
-  mongoUri: req('MONGODB_URI', ''),
-  redisUrl: req('REDIS_URL', ''),
+  mongoUri: req('MONGODB_URI', 'mongodb://127.0.0.1:27017/voxpilot'),
   s3: {
     endpoint: req('S3_ENDPOINT', ''),
     region: req('S3_REGION', 'us-east-1'),

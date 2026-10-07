@@ -11,6 +11,7 @@ transcribing, recording per-question audio, writing structured notes, and produc
 Key product constraints:
 - The **LLM must not own workflow control** — a deterministic engine owns state, retries, transitions, termination.
 - **Providers must be swappable** (OpenRouter ↔ NVIDIA NIM ↔ self-hosted) without touching UI/engine/storage.
+- **Local-first**: single instance, no Redis/cache server, no cloud required; MongoDB and S3 are optional upgrades.
 - **API keys never reach the frontend** after storage; encrypted at rest; never logged.
 - Telephony, STT, TTS, LLM, storage are **independent adapters** behind interfaces.
 - MVP must work end-to-end with **zero external credentials** (mock/offline path), then light up with real keys.
@@ -19,9 +20,9 @@ Key product constraints:
 
 ```
 ┌─────────────┐   HTTPS/WSS   ┌──────────────────────┐
-│ Angular PWA │◄─────────────►│  Express + Socket.IO │──► MongoDB (or file store)
-│ + Capacitor │               │  backend             │──► Redis (or in-process)
-└─────────────┘               └──────┬───────┬───────┘──► S3/MinIO (or local disk)
+│ Angular PWA │◄─────────────►│  Express + Socket.IO │──► MongoDB (or built-in file store)
+│ + Capacitor │               │  backend             │──► Local disk (or S3-compatible)
+└─────────────┘               └──────┬───────┬───────┘──► In-process cache (TTL)
                                      │       │
                     ┌────────────────┘       └────────────────┐
                     │ Conversation Engine (deterministic)      │ Realtime events
@@ -62,7 +63,7 @@ Nothing is faked: mock paths are labeled "Mock (offline)" in the UI and logs.
 ## 5. Database models (MongoDB; memory store mirrors these)
 
 `users, agents, scripts(+questions), providers, calls(call_sessions), call_turns, transcripts(embedded in turns), recordings, recording_clips, notes, evaluations(in summaries), webhooks, audit_logs, settings`
-Schemas: `backend/src/db/schemas.ts`, types: `backend/src/db/types.ts`. Audio bytes live in S3/MinIO/local disk; Mongo holds metadata + keys only.
+Schemas: `backend/src/db/schemas.ts`, types: `backend/src/db/types.ts`. Audio bytes live on local disk (or S3-compatible storage when configured); the DB holds metadata + keys only.
 
 ## 6. API surface
 

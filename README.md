@@ -8,7 +8,7 @@ notes and produce summaries — for interviews, complaints, surveys, reception, 
 
 | Path | Stack |
 |---|---|
-| `backend/` | Node.js + Express + Socket.IO, MongoDB/Redis with zero-dep offline fallback, S3/MinIO storage |
+| `backend/` | Node.js + Express + Socket.IO, MongoDB (optional) with built-in file store, local disk or S3-compatible recording storage |
 | `frontend/` | Angular 18 (standalone, signals, SCSS) + Capacitor bridge |
 | `native/android/` | Kotlin `VoxPilotTelephony` Capacitor plugin |
 | `docs/` | `API.md`, `TELEPHONY.md` · `ARCHITECTURE.md` at root |
@@ -39,13 +39,10 @@ New vendors plug in as adapters in `backend/src/services/provider/` — no engin
 
 ## Production infrastructure
 
-```bash
-docker compose up -d mongo redis minio   # + backend/frontend with real secrets:
-JWT_SECRET=… JWT_REFRESH_SECRET=… MASTER_KEY=… docker compose up -d --build
-```
-
-Set `MONGODB_URI`, `REDIS_URL`, `S3_ENDPOINT/…` in `backend/.env` to switch from the offline
-file store to MongoDB + Redis + S3/MinIO/R2. Recordings are owner-only (signed/range streams).
+`backend/.env` ships with local defaults (`MONGODB_URI=mongodb://127.0.0.1:27017/voxpilot`, etc.).
+If MongoDB isn't running, the app automatically uses its built-in file store instead —
+no setup needed. Point `S3_ENDPOINT/…` at MinIO/R2/S3 only if you want recordings off-disk.
+Recordings are owner-only (authenticated range streams).
 
 ## Telephony & Android
 
