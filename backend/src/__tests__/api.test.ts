@@ -1,6 +1,7 @@
 // API smoke tests with file-backed store (no MongoDB server needed).
 process.env.MASTER_KEY = 'test-master-key-32-bytes-minimum!!!';
 process.env.DATA_DIR = './data-test';
+process.env.MONGODB_URI = '';
 import request from 'supertest';
 
 let app: any;
