@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../core/auth.service';
+import { friendlyHttpError } from '../../core/http-error';
 
 @Component({
   selector: 'vp-register',
@@ -45,7 +46,7 @@ export class RegisterComponent {
     const { name, email, password } = this.form.value;
     this.auth.register(name!, email!, password!).subscribe({
       next: () => this.router.navigate(['/dashboard']),
-      error: (e) => { this.error.set(e.error?.error || 'Registration failed'); this.busy.set(false); },
+      error: (e) => { this.error.set(friendlyHttpError(e)); this.busy.set(false); },
     });
   }
 }
