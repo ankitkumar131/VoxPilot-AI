@@ -1,0 +1,67 @@
+# VoxPilot AI — AI call answering & telephone intelligence
+
+Configure an AI agent with a script, connect your own LLM provider, and let VoxPilot AI
+answer calls, ask questions, transcribe answers, record per-question audio, write structured
+notes and produce summaries — for interviews, complaints, surveys, reception, leads and more.
+
+## Monorepo
+
+| Path | Stack |
+|---|---|
+| `backend/` | Node.js + Express + Socket.IO, MongoDB/Redis with zero-dep offline fallback, S3/MinIO storage |
+| `frontend/` | Angular 18 (standalone, signals, SCSS) + Capacitor bridge |
+| `native/android/` | Kotlin `VoxPilotTelephony` Capacitor plugin |
+| `docs/` | `API.md`, `TELEPHONY.md` · `ARCHITECTURE.md` at root |
+
+## Quickstart (no external services needed)
+
+```bash
+# 1. backend
+cd backend && npm install
+cp .env.example .env        # defaults work offline (file store + mock AI)
+npm run seed                # demo user + agents + scripts (demo@voxpilot.ai / VoxPilot123!)
+npm run dev                 # :4000
+
+# 2. frontend (new terminal)
+cd frontend && npm install
+npm start                   # :4200, proxies /api + /socket.io → :4000
+```
+
+Open http://localhost:4200 → login → **New simulated call** → talk to the AI → open the call
+for transcript, per-question recordings, notes and summary.
+
+## Use your own LLM
+
+Providers → Add provider → **OpenRouter** (`https://openrouter.ai/api/v1`) or **NVIDIA NIM**
+(`https://integrate.api.nvidia.com/v1`) or any OpenAI-compatible endpoint (Ollama, vLLM, LM Studio…)
+→ paste key (AES-256 encrypted, never shown again) → **Test connection** → Set default.
+New vendors plug in as adapters in `backend/src/services/provider/` — no engine/UI changes.
+
+## Production infrastructure
+
+```bash
+docker compose up -d mongo redis minio   # + backend/frontend with real secrets:
+JWT_SECRET=… JWT_REFRESH_SECRET=… MASTER_KEY=… docker compose up -d --build
+```
+
+Set `MONGODB_URI`, `REDIS_URL`, `S3_ENDPOINT/…` in `backend/.env` to switch from the offline
+file store to MongoDB + Redis + S3/MinIO/R2. Recordings are owner-only (signed/range streams).
+
+## Telephony & Android
+
+- Browser **simulated calls** work end-to-end today (mic, dictation, TTS, barge-in, takeover).
+- PSTN/SIP production path is adapter-ready — see `docs/TELEPHONY.md`.
+- Android: `cd frontend && npx cap add android && npx cap sync` (needs Android SDK),
+  plus the Kotlin module in `native/android/` — see its README.
+
+## Testing
+
+```bash
+cd backend && npm test        # engine validators + full MVP API flow (9 tests)
+cd frontend && npx ng build   # production typecheck + bundle
+```
+
+## Security
+
+JWT + refresh rotation, per-user data isolation, encrypted provider secrets, rate limiting,
+helmet headers, audit logs, signed deduped webhooks. Never commit `.env` or keys.

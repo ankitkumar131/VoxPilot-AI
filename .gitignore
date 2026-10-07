@@ -1,0 +1,17 @@
+node_modules/
+dist/
+.angular/
+backend/data/*.json
+backend/data-test/
+backend/data/recordings/*
+!backend/data/recordings/.gitkeep
+.env
+.env.local
+*.log
+.DS_Store
+frontend/www/
+frontend/android/
+native/android/app/build/
+coverage/
+*.tgz
+data-test/

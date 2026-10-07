@@ -1,0 +1,61 @@
+# VoxPilot AI production infrastructure: MongoDB + Redis + MinIO (S3-compatible).
+# App: backend + frontend containers. Local dev can skip this (file store works).
+version: "3.9"
+services:
+  mongo:
+    image: mongo:7
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: voxpilot
+      MONGO_INITDB_ROOT_PASSWORD: voxpilot-secret
+    volumes: [mongo-data:/data/db]
+    ports: ["27017:27017"]
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    volumes: [redis-data:/data]
+    ports: ["6379:6379"]
+
+  minio:
+    image: minio/minio:latest
+    restart: unless-stopped
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: voxpilot
+      MINIO_ROOT_PASSWORD: voxpilot-secret-key
+    volumes: [minio-data:/data]
+    ports: ["9000:9000", "9001:9001"]
+
+  backend:
+    build: ./backend
+    restart: unless-stopped
+    depends_on: [mongo, redis, minio]
+    environment:
+      NODE_ENV: production
+      PORT: 4000
+      FRONTEND_URL: http://localhost:4200
+      MONGODB_URI: mongodb://voxpilot:voxpilot-secret@mongo:27017/voxpilot?authSource=admin
+      REDIS_URL: redis://redis:6379
+      S3_ENDPOINT: http://minio:9000
+      S3_BUCKET: voxpilot-recordings
+      S3_ACCESS_KEY: voxpilot
+      S3_SECRET_KEY: voxpilot-secret-key
+      JWT_SECRET: ${JWT_SECRET:?set JWT_SECRET}
+      JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET:?set JWT_REFRESH_SECRET}
+      MASTER_KEY: ${MASTER_KEY:?set MASTER_KEY}
+    ports: ["4000:4000"]
+    volumes: [backend-data:/app/data]
+
+  frontend:
+    image: nginx:alpine
+    restart: unless-stopped
+    depends_on: [backend]
+    volumes: [./deploy/nginx.conf:/etc/nginx/conf.d/default.conf:ro]
+    ports: ["8080:80"]
+
+volumes:
+  mongo-data: {}
+  redis-data: {}
+  minio-data: {}
+  backend-data: {}
