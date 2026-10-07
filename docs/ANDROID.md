@@ -230,6 +230,7 @@ Then just press ▶ Run again in Android Studio (or rebuild the APK).
 | `ERR_CLEARTEXT_NOT_PERMITTED` | `android:usesCleartextTraffic="true"` missing (Part D2) → rebuild |
 | Gradle sync fails / JDK error | Use Android Studio's bundled JDK: Settings → Build Tools → Gradle → Gradle JDK = `jbr-17` |
 | `SDK location not found` | Set `ANDROID_HOME` (Part A3) or create `frontend\android\local.properties`: `sdk.dir=C\:\\Users\\<you>\\AppData\\Local\\Android\\Sdk` |
+| `Could not read workspace metadata ... metadata.bin` (corrupted Gradle cache) | Close Android Studio → `cd frontend\android` → `.\gradlew --stop` → delete `C:\Users\<you>\.gradle\caches\<version>` (or the whole `caches` folder) + `frontend\android\.gradle` → reopen, **File → Invalidate Caches → Invalidate and Restart** → sync again |
 | `adb unauthorized` | Re-plug USB, accept the on-phone prompt, retry |
 | Mic doesn't record in app | Grant Microphone permission when asked; typing answers always works regardless |
 | App shows old UI after changes | You forgot `npm run build:apk` (build + sync) before Run |
