@@ -35,6 +35,9 @@ object CallSession {
     private val _log = MutableStateFlow<List<String>>(emptyList())
     val log: StateFlow<List<String>> = _log.asStateFlow()
 
+    private val _serviceAlive = MutableStateFlow(false)
+    val serviceAlive: StateFlow<Boolean> = _serviceAlive.asStateFlow()
+
     @Volatile var currentCall: Call? = null
     @Volatile var autoAnswer: Boolean = false
     @Volatile var txResult: String = "not tested"
@@ -47,6 +50,8 @@ object CallSession {
     }
 
     fun clearLog() { _log.value = emptyList() }
+
+    fun setServiceAlive(v: Boolean) { _serviceAlive.value = v }
 
     fun updateUi(state: UiState) { _ui.value = state }
     fun updateLevels(l: Levels) { _levels.value = l }

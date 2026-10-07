@@ -103,3 +103,4 @@ TX Tone B heard by other person: yes/no
 | `placeCall DENIED` | Grant CALL_PHONE (button 2) AND hold the default-dialer role |
 | Call screen doesn't pop up | Pull down notifications → tap "POC call in progress"; grant Notifications permission |
 | No calls reach `InCallService` at all | POC is not the default Phone app (see Step 2.1) |
+| "Telecom binding: ✗ not bound", no `call added` in log, auto-answer never fires | Fresh-install binding quirk: Settings → Apps → Default apps → Phone app → switch to **Phone**, then back to **VoxPilot POC**; if still stuck, **reboot the phone**. OPPO/ColorOS: also enable Settings → Battery → VoxPilot POC → allow background activity + auto-launch |

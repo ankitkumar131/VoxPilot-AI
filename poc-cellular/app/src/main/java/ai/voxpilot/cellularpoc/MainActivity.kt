@@ -76,6 +76,13 @@ class MainActivity : AppCompatActivity() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
+                    CallSession.serviceAlive.collect { alive ->
+                        findViewById<TextView>(R.id.tvStatusBinding).text =
+                            if (alive) "Telecom binding: ✓ BOUND (service alive)"
+                            else "Telecom binding: ✗ not bound — toggle default app / reboot"
+                    }
+                }
+                launch {
                     CallSession.log.collect { lines ->
                         findViewById<TextView>(R.id.tvLog).text =
                             if (lines.isEmpty()) "(log)" else lines.joinToString("\n")

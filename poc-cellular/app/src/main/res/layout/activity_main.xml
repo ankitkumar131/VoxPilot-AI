@@ -31,7 +31,10 @@
             android:text="Permissions: ?" android:textSize="15sp" android:textStyle="bold" />
         <TextView android:id="@+id/tvStatusSim"
             android:layout_width="wrap_content" android:layout_height="wrap_content"
-            android:text="SIM: ?" android:textSize="15sp" android:textStyle="bold"
+            android:text="SIM: ?" android:textSize="15sp" android:textStyle="bold" />
+        <TextView android:id="@+id/tvStatusBinding"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="Telecom binding: ?" android:textSize="15sp" android:textStyle="bold"
             android:layout_marginBottom="8dp" />
 
         <Button android:id="@+id/btnRole"

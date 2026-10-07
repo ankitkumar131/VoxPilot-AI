@@ -19,6 +19,18 @@ import androidx.core.app.NotificationCompat
  */
 class VoxInCallService : InCallService() {
 
+    override fun onCreate() {
+        super.onCreate()
+        CallSession.setServiceAlive(true)
+        CallSession.log("SERVICE BOUND by Telecom (InCallService alive)")
+    }
+
+    override fun onDestroy() {
+        CallSession.log("SERVICE UNBOUND (InCallService destroyed)")
+        CallSession.setServiceAlive(false)
+        super.onDestroy()
+    }
+
     private val cb = object : Call.Callback() {
         override fun onStateChanged(call: Call, state: Int) {
             onCallState(call, state)
