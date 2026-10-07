@@ -254,6 +254,7 @@ Then just press ▶ Run again in Android Studio (or rebuild the APK).
 |---|---|
 | `localhost` doesn't work in app | Correct — use `10.0.2.2` (emulator) or PC Wi-Fi IP (phone). `localhost` = the phone itself |
 | Login fails / "check Server URL" | Backend not running? Wrong IP? PC + phone on different Wi-Fi? Firewall rule missing (Part B2)? Test in phone's Chrome: `http://<PC-IP>:4000/api/health` |
+| Test shows "Cannot reach" but ngrok logs `OPTIONS /api/health 204` (no GET follows) | Classic CORS preflight failure → your **backend is outdated**: `git pull` + restart it (`npm run dev`). The backend console now logs `blocked CORS origin` with the exact origin when this happens |
 | `... "<!doctype" ... is not valid JSON` | App got a web page, not API data → (1) ngrok tunnel dead/expired (free URLs die on restart — get a fresh one or use a static domain), (2) URL pasted incompletely, or (3) app build predates the ngrok bypass header — `git pull` + `npm run build:apk` + re-run. Use the login screen's **Test connection** button to diagnose |
 | `ERR_CLEARTEXT_NOT_PERMITTED` | `android:usesCleartextTraffic="true"` missing (Part D2) → rebuild |
 | Gradle sync fails / JDK error | Use Android Studio's bundled JDK: Settings → Build Tools → Gradle → Gradle JDK = `jbr-17` |

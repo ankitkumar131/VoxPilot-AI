@@ -9,6 +9,7 @@ import { cache } from './db/cache';
 import { initSocket } from './realtime/socket';
 import { errorHandler, notFound } from './middleware/errorHandler';
 import { apiLimiter, authLimiter, callLimiter } from './middleware/rateLimit';
+import { corsOptions } from './middleware/cors';
 import authRoutes from './routes/auth.routes';
 import agentRoutes from './routes/agents.routes';
 import scriptRoutes from './routes/scripts.routes';
@@ -26,8 +27,7 @@ async function main() {
   const app = express();
   app.set('trust proxy', 1);
   app.use(helmet({ crossOriginResourcePolicy: { policy: 'cross-origin' } }));
-  // capacitor://localhost + http(s)://localhost = Android/iOS WebView origins (APK builds).
-  app.use(cors({ origin: [config.frontendUrl, 'http://localhost:4200', 'http://localhost:8100', 'capacitor://localhost', 'http://localhost', 'https://localhost'], credentials: true }));
+  app.use(cors(corsOptions));
   app.use(express.json({ limit: '12mb' }));
   app.use(express.urlencoded({ extended: true }));
 

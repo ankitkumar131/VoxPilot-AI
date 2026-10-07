@@ -4,13 +4,14 @@
 import { Server } from 'socket.io';
 import jwt from 'jsonwebtoken';
 import { config } from '../config';
+import { socketCorsOptions } from '../middleware/cors';
 import { logger } from '../utils/logger';
 
 let io: Server | null = null;
 
 export function initSocket(server: any) {
   io = new Server(server, {
-    cors: { origin: [config.frontendUrl, 'http://localhost:4200', 'http://localhost:8100', 'capacitor://localhost', 'http://localhost', 'https://localhost'], credentials: true },
+    cors: socketCorsOptions,
     path: '/socket.io',
   });
   io.use((socket, next) => {
